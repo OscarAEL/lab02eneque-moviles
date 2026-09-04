@@ -7,30 +7,107 @@ fun main() {
     println("=============================================")
 
     // Aforo
-    print("Ingrese el aforo: ")
-    val aforo = readLine()!!.toInt()
+    var aforo: Int
+
+    while (true) {
+        print("Ingrese el aforo: ")
+        val entrada = readLine()
+        val numero = entrada?.toIntOrNull()
+
+        if (numero != null && numero > 0) {
+            aforo = numero
+            break
+        }
+
+        println("Error: ingrese un numero entero mayor que 0.")
+    }
 
     println()
 
-    // Datos del estudiante
-    print("Nombre del estudiante: ")
-    val nombreEstudiante = readLine() ?: ""
+    // Nombre del estudiante
+    var nombreEstudiante: String
 
-    print("Cantidad de cursos: ")
-    val cantidadCursos = readLine()!!.toInt()
+    while (true) {
+        print("Nombre del estudiante: ")
+        val entrada = readLine()?.trim()
 
-    print("Turno (Manana / Tarde / Noche): ")
-    val turno = readLine() ?: ""
+        if (!entrada.isNullOrBlank() &&
+            entrada.all { it.isLetter() || it.isWhitespace() }
+        ) {
+            nombreEstudiante = entrada
+            break
+        }
 
-    print("Categoria (Ordinario / Becado): ")
-    val categoria = readLine() ?: ""
+        println("Error: ingrese un nombre valido, usando solo letras.")
+    }
 
-    // Matricula segun categoria
+    // Cantidad de cursos
+    var cantidadCursos: Int
+
+    while (true) {
+        print("Cantidad de cursos: ")
+        val entrada = readLine()
+        val numero = entrada?.toIntOrNull()
+
+        if (numero != null && numero in 1..10) {
+            cantidadCursos = numero
+            break
+        }
+
+        println("Error: la cantidad de cursos debe estar entre 1 y 10.")
+    }
+
+    // Turno
+    var turno: String
+
+    while (true) {
+        print("Turno (Manana / Tarde / Noche): ")
+        val entrada = readLine()?.trim()?.lowercase()
+
+        if (entrada == "manana" ||
+            entrada == "mañana" ||
+            entrada == "tarde" ||
+            entrada == "noche"
+        ) {
+            turno = entrada
+            break
+        }
+
+        println("Error: ingrese Manana, Tarde o Noche.")
+    }
+
+    // Categoria
+    var categoria: String
+
+    while (true) {
+        print("Categoria (Ordinario / Becado): ")
+        val entrada = readLine()?.trim()?.lowercase()
+
+        if (entrada == "ordinario" || entrada == "becado") {
+            categoria = entrada
+            break
+        }
+
+        println("Error: ingrese Ordinario o Becado.")
+    }
+
+    // Matricula
     var montoMatricula = 0.0
 
-    if (categoria.lowercase() == "ordinario") {
-        print("Ingrese costo de matricula: S/ ")
-        montoMatricula = readLine()!!.toDouble()
+    if (categoria == "ordinario") {
+
+        while (true) {
+            print("Ingrese costo de matricula: S/ ")
+            val entrada = readLine()
+            val numero = entrada?.toDoubleOrNull()
+
+            if (numero != null && numero > 0) {
+                montoMatricula = numero
+                break
+            }
+
+            println("Error: ingrese un monto mayor que 0.")
+        }
     }
 
     val nombresCursos = mutableListOf<String>()
@@ -45,14 +122,54 @@ fun main() {
 
         println("Curso $i")
 
-        print("Nombre del curso: ")
-        val nombreCurso = readLine() ?: ""
+        // Nombre del curso
+        var nombreCurso: String
 
-        print("Cantidad de creditos: ")
-        val creditos = readLine()!!.toInt()
+        while (true) {
+            print("Nombre del curso: ")
+            val entrada = readLine()?.trim()
 
-        print("Valor por credito: S/ ")
-        val valorCredito = readLine()!!.toDouble()
+            if (!entrada.isNullOrBlank() &&
+                entrada.all { it.isLetter() || it.isWhitespace() }
+            ) {
+                nombreCurso = entrada
+                break
+            }
+
+            println("Error: ingrese un nombre de curso valido, usando solo letras.")
+        }
+
+        // Creditos
+        var creditos: Int
+
+        while (true) {
+            print("Cantidad de creditos: ")
+            val entrada = readLine()
+            val numero = entrada?.toIntOrNull()
+
+            if (numero != null && numero in 1..6) {
+                creditos = numero
+                break
+            }
+
+            println("Error: los creditos deben estar entre 1 y 6.")
+        }
+
+        // Valor por credito
+        var valorCredito: Double
+
+        while (true) {
+            print("Valor por credito: S/ ")
+            val entrada = readLine()
+            val numero = entrada?.toDoubleOrNull()
+
+            if (numero != null && numero > 0) {
+                valorCredito = numero
+                break
+            }
+
+            println("Error: ingrese un monto mayor que 0.")
+        }
 
         val costoCurso = creditos * valorCredito
 
@@ -81,8 +198,8 @@ fun main() {
     }
 
     // Descuento segun el turno
-    val porcentajeDescuento = when (turno.lowercase()) {
-        "mañana", "manana" -> 0.10
+    val porcentajeDescuento = when (turno) {
+        "manana", "mañana" -> 0.10
         "tarde" -> 0.15
         "noche" -> 0.20
         else -> 0.0
