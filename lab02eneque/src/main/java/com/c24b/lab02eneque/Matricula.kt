@@ -81,15 +81,22 @@ fun main() {
     // Total final incluyendo la matricula
     val totalFinal = totalConDescuento + montoMatricula
 
+    // Calculo del IGV
+    val porcentajeIGV = 0.18
+    val montoIGV = totalFinal * porcentajeIGV
+
+    // Total final incluyendo IGV
+    val totalConIGV = totalFinal + montoIGV
+
     val cantidadCuotas: Int
 
-    if (totalFinal > 2500) {
+    if (totalConIGV > 2500) {
         cantidadCuotas = 3
     } else {
         cantidadCuotas = 2
     }
 
-    val valorCuota = totalFinal / cantidadCuotas
+    val valorCuota = totalConIGV / cantidadCuotas
 
     println()
     println("==============================================")
@@ -130,7 +137,9 @@ fun main() {
     println(String.format("Monto de descuento: S/ %.2f", montoDescuento))
     println(String.format("TOTAL CON DESCUENTO: S/ %.2f", totalConDescuento))
     println(String.format("Monto de matricula: S/ %.2f", montoMatricula))
-    println(String.format("TOTAL A PAGAR: S/ %.2f", totalFinal))
+    println(String.format("Subtotal: S/ %.2f", totalFinal))
+    println(String.format("IGV (18%%): S/ %.2f", montoIGV))
+    println(String.format("TOTAL A PAGAR: S/ %.2f", totalConIGV))
     println("Carga academica: $cargaAcademica")
     println(
         String.format(
