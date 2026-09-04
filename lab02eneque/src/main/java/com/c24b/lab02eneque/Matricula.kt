@@ -1,8 +1,8 @@
-package com.c24b.lab02eneque
+package com.eneque.lab02viernes
 
 fun main() {
     println("=============================================")
-    println("       BIENVENIDO AL SISTEMA DE MATRICULA    ")
+    println("       BIENVENIDO AL SISTEMA DE MATRICULA")
     println("=============================================")
 
     print("Nombre del estudiante: ")
@@ -10,6 +10,9 @@ fun main() {
 
     print("Cantidad de cursos: ")
     val cantidadCursos = readLine()!!.toInt()
+
+    print("Turno (Mañana / Tarde / Noche): ")
+    val turno = readLine() ?: ""
 
     val nombresCursos = mutableListOf<String>()
     val creditosCursos = mutableListOf<Int>()
@@ -64,11 +67,23 @@ fun main() {
 
     val valorCuota = totalPagar / cantidadCuotas
 
+// Calculo del descuento segun el turno
+    val porcentajeDescuento = when (turno.lowercase()) {
+        "mañana", "manana" -> 0.10
+        "tarde" -> 0.15
+        "noche" -> 0.20
+        else -> 0.0
+    }
+
+    val montoDescuento = totalPagar * porcentajeDescuento
+    val totalConDescuento = totalPagar - montoDescuento
+
     println()
     println("==============================================")
     println("             RESUMEN DE MATRICULA")
     println("==============================================")
     println("Estudiante: $nombreEstudiante")
+    println("Turno: $turno")
     println()
 
     println(
@@ -96,7 +111,10 @@ fun main() {
 
     println("Cursos matriculados: $cantidadCursos")
     println("Total de creditos: $totalCreditos")
-    println(String.format("TOTAL A PAGAR: S/ %.2f", totalPagar))
+    println(String.format("TOTAL: S/ %.2f", totalPagar))
+    println(String.format("Descuento por turno: %.0f%%", porcentajeDescuento * 100))
+    println(String.format("Monto de descuento: S/ %.2f", montoDescuento))
+    println(String.format("TOTAL CON DESCUENTO: S/ %.2f", totalConDescuento))
     println("Carga academica: $cargaAcademica")
     println(
         String.format(
