@@ -1,21 +1,37 @@
 package com.eneque.lab02viernes
 
 fun main() {
+
     println("=============================================")
-    println("       BIENVENIDO AL SISTEMA DE MATRICULA")
+    println("       SISTEMA DE MATRICULA")
     println("=============================================")
 
+    // Aforo
+    print("Ingrese el aforo: ")
+    val aforo = readLine()!!.toInt()
+
+    println()
+
+    // Datos del estudiante
     print("Nombre del estudiante: ")
     val nombreEstudiante = readLine() ?: ""
 
     print("Cantidad de cursos: ")
     val cantidadCursos = readLine()!!.toInt()
 
-    print("Turno (Mañana / Tarde / Noche): ")
+    print("Turno (Manana / Tarde / Noche): ")
     val turno = readLine() ?: ""
 
     print("Categoria (Ordinario / Becado): ")
     val categoria = readLine() ?: ""
+
+    // Matricula segun categoria
+    var montoMatricula = 0.0
+
+    if (categoria.lowercase() == "ordinario") {
+        print("Ingrese costo de matricula: S/ ")
+        montoMatricula = readLine()!!.toDouble()
+    }
 
     val nombresCursos = mutableListOf<String>()
     val creditosCursos = mutableListOf<Int>()
@@ -24,7 +40,9 @@ fun main() {
 
     println()
 
+    // Registro de cursos
     for (i in 1..cantidadCursos) {
+
         println("Curso $i")
 
         print("Nombre del curso: ")
@@ -46,6 +64,7 @@ fun main() {
         println()
     }
 
+    // Calculo de totales de cursos
     var totalCreditos = 0
     var totalPagar = 0.0
 
@@ -54,13 +73,14 @@ fun main() {
         totalPagar += costosCursos[i]
     }
 
+    // Carga academica
     val cargaAcademica = when {
         totalCreditos <= 12 -> "Matricula Regular"
         totalCreditos <= 18 -> "Carga Completa"
         else -> "Requiere Autorizacion"
     }
 
-    // Calculo del descuento segun el turno
+    // Descuento segun el turno
     val porcentajeDescuento = when (turno.lowercase()) {
         "mañana", "manana" -> 0.10
         "tarde" -> 0.15
@@ -71,23 +91,17 @@ fun main() {
     val montoDescuento = totalPagar * porcentajeDescuento
     val totalConDescuento = totalPagar - montoDescuento
 
-    // Calculo de la matricula segun la categoria
-    val montoMatricula = when (categoria.lowercase()) {
-        "ordinario" -> 150.00
-        "becado" -> 0.00
-        else -> 0.00
-    }
+    // Subtotal incluyendo matricula
+    val subtotal = totalConDescuento + montoMatricula
 
-    // Total final incluyendo la matricula
-    val totalFinal = totalConDescuento + montoMatricula
-
-    // Calculo del IGV
+    // IGV
     val porcentajeIGV = 0.18
-    val montoIGV = totalFinal * porcentajeIGV
+    val montoIGV = subtotal * porcentajeIGV
 
-    // Total final incluyendo IGV
-    val totalConIGV = totalFinal + montoIGV
+    // Total final
+    val totalConIGV = subtotal + montoIGV
 
+    // Forma de pago
     val cantidadCuotas: Int
 
     if (totalConIGV > 2500) {
@@ -98,13 +112,17 @@ fun main() {
 
     val valorCuota = totalConIGV / cantidadCuotas
 
+    // Resultado
     println()
     println("==============================================")
     println("             RESUMEN DE MATRICULA")
     println("==============================================")
+
+    println("Aforo: $aforo")
     println("Estudiante: $nombreEstudiante")
     println("Turno: $turno")
     println("Categoria: $categoria")
+
     println()
 
     println(
@@ -132,15 +150,65 @@ fun main() {
 
     println("Cursos matriculados: $cantidadCursos")
     println("Total de creditos: $totalCreditos")
-    println(String.format("TOTAL CURSOS: S/ %.2f", totalPagar))
-    println(String.format("Descuento por turno: %.0f%%", porcentajeDescuento * 100))
-    println(String.format("Monto de descuento: S/ %.2f", montoDescuento))
-    println(String.format("TOTAL CON DESCUENTO: S/ %.2f", totalConDescuento))
-    println(String.format("Monto de matricula: S/ %.2f", montoMatricula))
-    println(String.format("Subtotal: S/ %.2f", totalFinal))
-    println(String.format("IGV (18%%): S/ %.2f", montoIGV))
-    println(String.format("TOTAL A PAGAR: S/ %.2f", totalConIGV))
+
+    println(
+        String.format(
+            "TOTAL CURSOS: S/ %.2f",
+            totalPagar
+        )
+    )
+
+    println(
+        String.format(
+            "Descuento por turno: %.0f%%",
+            porcentajeDescuento * 100
+        )
+    )
+
+    println(
+        String.format(
+            "Monto de descuento: S/ %.2f",
+            montoDescuento
+        )
+    )
+
+    println(
+        String.format(
+            "TOTAL CON DESCUENTO: S/ %.2f",
+            totalConDescuento
+        )
+    )
+
+    println(
+        String.format(
+            "Monto de matricula: S/ %.2f",
+            montoMatricula
+        )
+    )
+
+    println(
+        String.format(
+            "Subtotal: S/ %.2f",
+            subtotal
+        )
+    )
+
+    println(
+        String.format(
+            "IGV (18%%): S/ %.2f",
+            montoIGV
+        )
+    )
+
+    println(
+        String.format(
+            "TOTAL A PAGAR: S/ %.2f",
+            totalConIGV
+        )
+    )
+
     println("Carga academica: $cargaAcademica")
+
     println(
         String.format(
             "Forma de pago: %d cuotas de S/ %.2f",
